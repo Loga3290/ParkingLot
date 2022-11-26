@@ -10,9 +10,9 @@ import java.util.List;
  * Airport Four Wheeler Time Block Factory
  */
 public class AirportFWTimeBlockFactory {
-    private static final TimeBlock block1 = new ZeroToTwelveHourTimeBlock(0L, 12L, 60);
-    private static final TimeBlock block2 = new TwelveToTwentyFourHourTimeBlock(8L, 24L, 80);
-    private static final TimeBlock block3 = new TwentyFourToInfinityHourTimeBlock(24L, 1440L, 100);
+    private final TimeBlock block1 = new ZeroToTwelveHourTimeBlock(0L, 12L, 60);
+    private final TimeBlock block2 = new TwelveToTwentyFourHourTimeBlock(8L, 24L, 80);
+    private final TimeBlock block3 = new TwentyFourToInfinityHourTimeBlock(24L, 1440L, 100);
 
 
     /**
