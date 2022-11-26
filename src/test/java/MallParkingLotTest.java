@@ -16,13 +16,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-
+/**
+ * Used Behaviour Driven Testing using junits
+ * Class to check Mall Fee model parking and unparking scenarios
+ */
 public class MallParkingLotTest {
 
     private ParkingLot parkingLot;
 
+    /**
+     * Method to create a Mall Parking lot object with
+     * Given Feemodel and spaces
+     */
     @Before
     public void executeBefore(){
         Map<VehicleEnum, Integer> space = new HashMap<>();
