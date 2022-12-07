@@ -1,6 +1,5 @@
 package model.feemodels;
 
-import model.IFeeModel;
 import model.ParkingTicket;
 import model.mall.MallParkingLotFactory;
 import util.VehicleTypeEnum;

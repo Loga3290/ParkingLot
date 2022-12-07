@@ -1,5 +1,6 @@
-package model;
+package model.feemodels;
 
+import model.ParkingTicket;
 import util.VehicleTypeEnum;
 
 import java.util.List;

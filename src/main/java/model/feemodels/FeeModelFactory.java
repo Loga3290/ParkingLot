@@ -1,7 +1,6 @@
 package model.feemodels;
 
 import exception.InvalidInputException;
-import model.IFeeModel;
 import model.mall.MallParkingLotFactory;
 import timeblocks.*;
 import util.ErrorConstant;

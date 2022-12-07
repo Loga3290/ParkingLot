@@ -1,6 +1,5 @@
 package model.feemodels;
 
-import model.IFeeModel;
 import model.ParkingTicket;
 import timeblocks.TimeBlockFactory;
 import util.VehicleTypeEnum;

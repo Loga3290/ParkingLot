@@ -2,6 +2,7 @@ import exception.InvalidInputException;
 import model.*;
 import model.feemodels.FeeModelEnum;
 import model.feemodels.FeeModelFactory;
+import model.feemodels.IFeeModel;
 import model.vehicle.IVehicle;
 import util.*;
 
