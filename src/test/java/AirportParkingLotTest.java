@@ -1,6 +1,7 @@
 import exception.InvalidInputException;
 import model.ParkingReceipt;
 import model.ParkingTicket;
+import model.feemodels.FeeModelEnum;
 import model.vehicle.FourWheeler;
 import model.vehicle.HeavyVehicle;
 import model.vehicle.IVehicle;

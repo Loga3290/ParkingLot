@@ -18,16 +18,17 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
+
 /**
  * Used Behaviour Driven Testing using junits
- * Class to check Mall Fee model parking and unparking scenarios
+ * Class to check CITY_MARKET Fee model parking and unparking scenarios
  */
-public class MallParkingLotTest {
+public class CityMarketParkingLotTest {
 
     private ParkingLot parkingLot;
 
     /**
-     * Method to create a Mall Parking lot object with
+     * Method to create an CITY_MARKET Parking lot object with
      * Given Feemodel and spaces
      */
     @Before
@@ -35,13 +36,43 @@ public class MallParkingLotTest {
         Map<VehicleEnum, Integer> space = new HashMap<>();
         space.put(VehicleEnum.scooter, 10);
         space.put(VehicleEnum.car, 10);
-        space.put(VehicleEnum.truck, 10);
-        parkingLot = new ParkingLot(space, FeeModelEnum.MALL);
+        parkingLot = new ParkingLot(space, FeeModelEnum.CITY_MARKET);
     }
+
 
     //Parking Tests
     @Test
+    public void testParkTruckWhichDoNotHaveSpaceAllotted(){
+
+
+        IVehicle vehicle = new HeavyVehicle("TN99J0398");
+        try {
+             parkingLot.park(vehicle, LocalDateTime.now().minusDays(1));
+        }
+        catch (InvalidInputException exception){
+            assertEquals(exception.getMessage(), ErrorConstant.SPACE_NOT_AVAILABLE);
+        }
+
+    }
+
+    @Test
+    public void testParkHeavyVehicleWhichIsNotPartOfCitymarketFeeModel(){
+        Map<VehicleEnum, Integer> space = new HashMap<>();
+        space.put(VehicleEnum.scooter, 10);
+        space.put(VehicleEnum.car, 10);
+
+        try {
+            new ParkingLot(space, FeeModelEnum.CITY_MARKET);
+        }
+        catch (InvalidInputException exception){
+            assertEquals(exception.getMessage(), ErrorConstant.NO_PARKING_SPACE_AVL);
+        }
+
+    }
+
+    @Test
     public void testParkTwoWheelerWhenNoSpotsLeft(){
+
 
         IVehicle vehicle1 = new TwoWheeler("TN99J0398");
         IVehicle vehicle2 = new TwoWheeler("TN99J0389");
@@ -102,7 +133,7 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new TwoWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusMinutes(30));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(10, (int) receipt.getFee());
+        assertEquals(20, (int) receipt.getFee());
 
     }
 
@@ -111,7 +142,7 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new TwoWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusHours(4));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(40), receipt.getFee());
+        assertEquals(Integer.valueOf(30), receipt.getFee());
 
     }
     @Test
@@ -119,7 +150,7 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new TwoWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusMinutes(480));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(80), receipt.getFee());
+        assertEquals(Integer.valueOf(70), receipt.getFee());
 
     }
     @Test
@@ -127,7 +158,7 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new TwoWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusHours(12));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(120), receipt.getFee());
+        assertEquals(Integer.valueOf(110), receipt.getFee());
 
     }
     @Test
@@ -135,7 +166,7 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new TwoWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusHours(25));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(250), receipt.getFee());
+        assertEquals(Integer.valueOf(330), receipt.getFee());
 
     }
 
@@ -144,16 +175,25 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new TwoWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusDays(5));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(1200), receipt.getFee());
+        assertEquals(Integer.valueOf(630), receipt.getFee());
 
     }
 
     @Test
+    public void testSevenDaysParkedTwoWheeler(){
+        IVehicle vehicle1 = new TwoWheeler("TN99J0398");
+        ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusDays(7));
+        ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
+        assertEquals(Integer.valueOf(5630), receipt.getFee());
+
+    }
+
+    /*@Test
     public void testChargesOfHalfHourParkedFourWheeler(){
         IVehicle vehicle1 = new FourWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusMinutes(30));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(20), receipt.getFee());
+        assertEquals(Integer.valueOf(60), receipt.getFee());
 
     }
 
@@ -162,7 +202,7 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new FourWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusHours(4));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(80), receipt.getFee());
+        assertEquals(Integer.valueOf(60), receipt.getFee());
 
     }
     @Test
@@ -170,7 +210,7 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new FourWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusMinutes(480));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(160), receipt.getFee());
+        assertEquals(Integer.valueOf(60), receipt.getFee());
 
     }
     @Test
@@ -178,7 +218,7 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new FourWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusHours(12));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(240), receipt.getFee());
+        assertEquals(Integer.valueOf(80), receipt.getFee());
 
     }
     @Test
@@ -186,7 +226,7 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new FourWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusHours(25));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(500), receipt.getFee());
+        assertEquals(Integer.valueOf(200), receipt.getFee());
 
     }
 
@@ -195,58 +235,7 @@ public class MallParkingLotTest {
         IVehicle vehicle1 = new FourWheeler("TN99J0398");
         ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusDays(5));
         ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(2400), receipt.getFee());
+        assertEquals(Integer.valueOf(500), receipt.getFee());
 
-    }
-
-    @Test
-    public void testChargesOfHalfHourParkedHeavyVehicle(){
-        IVehicle vehicle1 = new HeavyVehicle("TN99J0398");
-        ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusMinutes(30));
-        ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(50), receipt.getFee());
-
-    }
-
-    @Test
-    public void testFourHourParkedHeavyVehicle(){
-        IVehicle vehicle1 = new HeavyVehicle("TN99J0398");
-        ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusHours(4));
-        ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(200), receipt.getFee());
-
-    }
-    @Test
-    public void testEightHourParkedHeavyVehicle(){
-        IVehicle vehicle1 = new HeavyVehicle("TN99J0398");
-        ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusMinutes(480));
-        ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(400), receipt.getFee());
-
-    }
-    @Test
-    public void testTwelveHourParkedHeavyVehicle(){
-        IVehicle vehicle1 = new HeavyVehicle("TN99J0398");
-        ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusHours(12));
-        ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(600), receipt.getFee());
-
-    }
-    @Test
-    public void testTwentyFiveHourParkedHeavyVehicle(){
-        IVehicle vehicle1 = new HeavyVehicle("TN99J0398");
-        ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusHours(25));
-        ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(1250), receipt.getFee());
-
-    }
-
-    @Test
-    public void testFiveDaysParkedHeavyVehicle(){
-        IVehicle vehicle1 = new HeavyVehicle("TN99J0398");
-        ParkingTicket parkingTicket = parkingLot.park(vehicle1, LocalDateTime.now().minusDays(5));
-        ParkingReceipt receipt = parkingLot.unpark(parkingTicket.getTicketNo());
-        assertEquals(Integer.valueOf(6000), receipt.getFee());
-
-    }
+    }*/
 }

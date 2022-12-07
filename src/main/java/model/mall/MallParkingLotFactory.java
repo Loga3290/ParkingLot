@@ -6,11 +6,11 @@ import util.VehicleTypeEnum;
 
 public class MallParkingLotFactory {
 
-    private final IMallParking mallFWParking = new MallFWParkingImpl(20);
-    private final IMallParking mallTWParking = new MallTWParkingImpl(10);
-    private final IMallParking mallHVParking = new MallHVParkingImpl(50);
+    private final MallParkingLot mallFWParking = new MallParkingLot(20, 60);
+    private final MallParkingLot mallTWParking = new MallParkingLot(10, 60);
+    private final MallParkingLot mallHVParking = new MallParkingLot(50, 60);
 
-    public IMallParking getParkingImpl(VehicleTypeEnum vehicleTypeEnum){
+    public MallParkingLot getParkingImpl(VehicleTypeEnum vehicleTypeEnum){
         switch (vehicleTypeEnum){
             case TwoWheeler: return mallTWParking;
             case FourWheeler: return mallFWParking;
